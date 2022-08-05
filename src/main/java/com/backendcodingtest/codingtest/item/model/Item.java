@@ -1,6 +1,7 @@
 package com.backendcodingtest.codingtest.item.model;
 
 import com.backendcodingtest.codingtest.common.model.BasicEntity;
+import com.backendcodingtest.codingtest.recommenditem.model.RecommendItem;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

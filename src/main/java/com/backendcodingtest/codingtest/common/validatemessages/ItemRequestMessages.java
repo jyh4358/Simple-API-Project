@@ -6,5 +6,7 @@ public class ItemRequestMessages {
     public static final String ITEM_CONTENT_URL_BLANK_MESSAGES = "상품 설명 페이지 URL은 필수 입니다. 상품 설명 페이지 URL을 입력해주세요.";
     public static final String ITEM_ORIGINAL_PRICE_NULL_MESSAGES = "상품 가격은 필수 입니다. 상품 가격을 입력해주세요.";
     public static final String ITEM_SALE_PRICE_NULL_MESSAGES = "상품 판매 가격은 필수 입니다. 상품 판매 가격을 입력해주세요.";
+    public static final String ITEM_ID_NULL_MESSAGES = "상품 식별자 값이 없습니다. 다시 확인해 주세요.";
 
+    public static final String RECOMMEND_ITEM_SIZE_MESSAGES = "추천 아이템은 20개 이하로 설정해주세요.";
 }

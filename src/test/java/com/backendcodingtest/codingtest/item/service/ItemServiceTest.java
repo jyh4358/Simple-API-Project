@@ -2,12 +2,12 @@ package com.backendcodingtest.codingtest.item.service;
 
 import com.backendcodingtest.codingtest.common.exception.httpexception.DuplicateException;
 import com.backendcodingtest.codingtest.common.exception.httpexception.NotFountException;
-import com.backendcodingtest.codingtest.item.common.ServiceBaseTest;
+import com.backendcodingtest.codingtest.common.ServiceBaseTest;
 import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
 import com.backendcodingtest.codingtest.item.model.Item;
-import com.backendcodingtest.codingtest.recommenditem.model.RecommendItemRequest;
+import com.backendcodingtest.codingtest.recommenditem.dto.RecommendItemRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
