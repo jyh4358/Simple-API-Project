@@ -9,4 +9,5 @@ public class ItemRequestMessages {
     public static final String ITEM_ID_NULL_MESSAGES = "상품 식별자 값이 없습니다. 다시 확인해 주세요.";
 
     public static final String RECOMMEND_ITEM_SIZE_MESSAGES = "추천 아이템은 20개 이하로 설정해주세요.";
+    public static final String RECOMMEND_ITEM_SCORE_MESSAGES = "추천 상품의 연관도 점수를 입력해주세요.";
 }
