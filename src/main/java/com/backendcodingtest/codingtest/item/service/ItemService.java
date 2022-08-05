@@ -1,19 +1,35 @@
 package com.backendcodingtest.codingtest.item.service;
 
-import com.backendcodingtest.codingtest.common.exception.ExceptionMessage;
 import com.backendcodingtest.codingtest.item.dto.ItemCreateRequest;
+import com.backendcodingtest.codingtest.item.dto.ItemDetail;
+import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
+import com.backendcodingtest.codingtest.item.model.Item;
 import com.backendcodingtest.codingtest.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.DUPLICATE_ITEM_NAME;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
+
+
+    public ItemDetailResponse findItem(String id) {
+        List<Long> ids = converterStringToStringList(id);
+
+        List<Item> findItemList = itemRepository.findAllById(ids);
+
+        return ItemDetailResponse.of(findItemList.stream().map(findItem -> ItemDetail.of(findItem)).collect(Collectors.toList()));
+    }
 
 
     @Transactional
@@ -52,9 +68,19 @@ public class ItemService {
 
     }
 
+
     private void checkDuplicateItemName(String name) {
         if (itemRepository.existsByName(name)) {
             throw DUPLICATE_ITEM_NAME.getException();
         }
     }
+
+    public List<Long> converterStringToStringList(String id) {
+        if (id == null) {
+            return new ArrayList<>();
+        }
+
+        return Arrays.stream(id.split(",")).map(s -> Long.parseLong(s)).collect(Collectors.toList());
+    }
+
 }
