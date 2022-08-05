@@ -1,9 +1,9 @@
 package com.backendcodingtest.codingtest.item.service;
 
-import com.backendcodingtest.codingtest.common.exception.ExceptionMessage;
 import com.backendcodingtest.codingtest.common.exception.httpexception.DuplicateException;
+import com.backendcodingtest.codingtest.common.exception.httpexception.NotFountException;
 import com.backendcodingtest.codingtest.item.common.ServiceBaseTest;
-import com.backendcodingtest.codingtest.item.dto.ItemCreateRequest;
+import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
 import com.backendcodingtest.codingtest.item.model.Item;
@@ -26,7 +26,7 @@ public class ItemServiceTest extends ServiceBaseTest {
     public void 상품_등록() {
 
         // given
-        ItemCreateRequest itemCreateRequest = new ItemCreateRequest(
+        ItemCreateAndUpdateRequest itemCreateAndUpdateRequest = new ItemCreateAndUpdateRequest(
                 "상품1",
                 "www.imageUrl.com",
                 "www.contentUrl.com",
@@ -35,18 +35,18 @@ public class ItemServiceTest extends ServiceBaseTest {
         );
 
         // when
-        itemService.saveItem(itemCreateRequest);
+        itemService.saveItem(itemCreateAndUpdateRequest);
 
         // then
         List<Item> findItemList = itemRepository.findAll();
         Assertions.assertThat(findItemList).hasSize(1);
 
         Item findItem = findItemList.get(0);
-        Assertions.assertThat(findItem.getName()).isEqualTo(itemCreateRequest.getName());
-        Assertions.assertThat(findItem.getImageUrl()).isEqualTo(itemCreateRequest.getImageUrl());
-        Assertions.assertThat(findItem.getContentUrl()).isEqualTo(itemCreateRequest.getContentUrl());
-        Assertions.assertThat(findItem.getOriginalPrice()).isEqualTo(itemCreateRequest.getOriginalPrice());
-        Assertions.assertThat(findItem.getSalePrice()).isEqualTo(itemCreateRequest.getSalePrice());
+        Assertions.assertThat(findItem.getName()).isEqualTo(itemCreateAndUpdateRequest.getName());
+        Assertions.assertThat(findItem.getImageUrl()).isEqualTo(itemCreateAndUpdateRequest.getImageUrl());
+        Assertions.assertThat(findItem.getContentUrl()).isEqualTo(itemCreateAndUpdateRequest.getContentUrl());
+        Assertions.assertThat(findItem.getOriginalPrice()).isEqualTo(itemCreateAndUpdateRequest.getOriginalPrice());
+        Assertions.assertThat(findItem.getSalePrice()).isEqualTo(itemCreateAndUpdateRequest.getSalePrice());
     }
 
     @DisplayName("[예외] 중복된 상품이름 등록 시 예외가 발생한다.")
@@ -54,14 +54,14 @@ public class ItemServiceTest extends ServiceBaseTest {
     public void 상품_등록_예외() {
 
         // given
-        ItemCreateRequest itemCreateRequest1 = new ItemCreateRequest(
+        ItemCreateAndUpdateRequest itemCreateAndUpdateRequest1 = new ItemCreateAndUpdateRequest(
                 "상품",
                 "www.imageUrl.com",
                 "www.contentUrl.com",
                 10000,
                 5000
         );
-        ItemCreateRequest itemCreateRequest2 = new ItemCreateRequest(
+        ItemCreateAndUpdateRequest itemCreateAndUpdateRequest2 = new ItemCreateAndUpdateRequest(
                 "상품",
                 "www.imageUrl.com",
                 "www.contentUrl.com",
@@ -69,17 +69,17 @@ public class ItemServiceTest extends ServiceBaseTest {
                 5000
         );
 
-        itemService.saveItem(itemCreateRequest1);
+        itemService.saveItem(itemCreateAndUpdateRequest1);
 
 
         // when&then
         Assertions.assertThatThrownBy(() ->
-                        itemService.saveItem(itemCreateRequest2))
+                        itemService.saveItem(itemCreateAndUpdateRequest2))
                 .isInstanceOf(DuplicateException.class);
 
     }
 
-    @DisplayName("상품 1개 조회")
+    @DisplayName("상품 1개을 조회 한다.")
     @Test
     public void 상품_조회1() {
 
@@ -111,7 +111,7 @@ public class ItemServiceTest extends ServiceBaseTest {
         Assertions.assertThat(itemDetail.getSalePrice()).isEqualTo(savedItem.getSalePrice());
     }
 
-    @DisplayName("상품 2개 조회")
+    @DisplayName("여러개의 상품을 조회한다.")
     @Test
     public void 상품_조회2() {
 
@@ -160,6 +160,150 @@ public class ItemServiceTest extends ServiceBaseTest {
         Assertions.assertThat(itemDetail2.getSalePrice()).isEqualTo(savedItem2.getSalePrice());
     }
 
+    @DisplayName("상품을 수정한다.")
+    @Test
+    public void 상품_수정() {
+
+        // given
+        Item savedItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.image-url.com",
+                        "www.content-url.com",
+                        10000,
+                        5000
+                )
+        );
+
+        ItemCreateAndUpdateRequest itemCreateAndUpdateRequest = new ItemCreateAndUpdateRequest(
+                "수정된 상품",
+                "www.update-image-url.com",
+                "www.update-content-url.com",
+                20000,
+                10000
+        );
+
+
+        // when
+        itemService.updateItem(savedItem.getId(), itemCreateAndUpdateRequest);
+
+        // then
+        Item findItem = itemRepository.findById(savedItem.getId()).get();
+
+        Assertions.assertThat(findItem.getName()).isEqualTo(itemCreateAndUpdateRequest.getName());
+        Assertions.assertThat(findItem.getImageUrl()).isEqualTo(itemCreateAndUpdateRequest.getImageUrl());
+        Assertions.assertThat(findItem.getContentUrl()).isEqualTo(itemCreateAndUpdateRequest.getContentUrl());
+        Assertions.assertThat(findItem.getOriginalPrice()).isEqualTo(itemCreateAndUpdateRequest.getOriginalPrice());
+        Assertions.assertThat(findItem.getSalePrice()).isEqualTo(itemCreateAndUpdateRequest.getSalePrice());
+    }
+
+    @DisplayName("[예외]상품 수정 시 상품이 존재하지 않으면 예외가 발생한다.")
+    @Test
+    public void 상품_수정_예외1() {
+
+        // given
+        Item savedItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.image-url.com",
+                        "www.content-url.com",
+                        10000,
+                        5000
+                )
+        );
+
+        ItemCreateAndUpdateRequest itemCreateAndUpdateRequest = new ItemCreateAndUpdateRequest(
+                "수정된 상품",
+                "www.update-image-url.com",
+                "www.update-content-url.com",
+                20000,
+                10000
+        );
+
+        // when
+        itemRepository.delete(savedItem);
+
+        // then
+        Assertions.assertThatThrownBy(() ->
+                itemService.updateItem(savedItem.getId(), itemCreateAndUpdateRequest))
+                .isInstanceOf(NotFountException.class);
+    }
+
+    @DisplayName("[예외] 상품 수정 시 중복된 상품이름으로 요청하면 예외가 발생한다.")
+    @Test
+    public void 상품_수정_예외2() {
+
+        // given
+        Item savedItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.image-url.com",
+                        "www.content-url.com",
+                        10000,
+                        5000
+                )
+        );
+
+        ItemCreateAndUpdateRequest itemCreateAndUpdateRequest = new ItemCreateAndUpdateRequest(
+                "상품",
+                "www.update-image-url.com",
+                "www.update-content-url.com",
+                20000,
+                10000
+        );
+
+        // when&then
+        Assertions.assertThatThrownBy(() ->
+                        itemService.updateItem(savedItem.getId(), itemCreateAndUpdateRequest))
+                .isInstanceOf(DuplicateException.class);
+
+    }
+
+    @DisplayName("상품을 삭제한다.")
+    @Test
+    public void 상품_삭제() {
+        // given
+        Item savedItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.image-url.com",
+                        "www.content-url.com",
+                        10000,
+                        5000
+                )
+        );
+
+        // when
+        itemService.deleteItem(savedItem.getId());
+
+        // then
+        List<Item> findAllItem = itemRepository.findAll();
+        Assertions.assertThat(findAllItem).hasSize(0);
+    }
+
+    @DisplayName("[예외] 존재하지 않는 상품을 삭제 시 예외가 발생한다.")
+    @Test
+    public void 상품_삭제_예외() {
+        // given
+        Item savedItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.image-url.com",
+                        "www.content-url.com",
+                        10000,
+                        5000
+                )
+        );
+
+        itemService.deleteItem(savedItem.getId());
+
+        // when*then
+        Assertions.assertThatThrownBy(() ->
+                        itemService.deleteItem(savedItem.getId()))
+                .isInstanceOf(NotFountException.class);
+
+    }
+
 
     @DisplayName("상품 등록하면서 추천 상품도 같이 등록한다.")
 //    @Test
@@ -182,7 +326,7 @@ public class ItemServiceTest extends ServiceBaseTest {
 
 
 
-        ItemCreateRequest itemCreateRequest = new ItemCreateRequest(
+        ItemCreateAndUpdateRequest itemCreateAndUpdateRequest = new ItemCreateAndUpdateRequest(
                 "상품",
                 "www.imageUrl.com",
                 "www.contentUrl.com",
@@ -191,7 +335,7 @@ public class ItemServiceTest extends ServiceBaseTest {
         );
 
         // when
-        itemService.saveItem(itemCreateRequest);
+        itemService.saveItem(itemCreateAndUpdateRequest);
 
         List<Item> findItemList = itemRepository.findAll();
         Item findItem = findItemList.get(findItemList.size() - 1);
@@ -199,15 +343,14 @@ public class ItemServiceTest extends ServiceBaseTest {
 
         // then
         Assertions.assertThat(findItemList).hasSize(2);
-        Assertions.assertThat(findItem.getName()).isEqualTo(itemCreateRequest.getName());
-        Assertions.assertThat(findItem.getImageUrl()).isEqualTo(itemCreateRequest.getImageUrl());
-        Assertions.assertThat(findItem.getContentUrl()).isEqualTo(itemCreateRequest.getContentUrl());
-        Assertions.assertThat(findItem.getOriginalPrice()).isEqualTo(itemCreateRequest.getOriginalPrice());
-        Assertions.assertThat(findItem.getSalePrice()).isEqualTo(itemCreateRequest.getSalePrice());
+        Assertions.assertThat(findItem.getName()).isEqualTo(itemCreateAndUpdateRequest.getName());
+        Assertions.assertThat(findItem.getImageUrl()).isEqualTo(itemCreateAndUpdateRequest.getImageUrl());
+        Assertions.assertThat(findItem.getContentUrl()).isEqualTo(itemCreateAndUpdateRequest.getContentUrl());
+        Assertions.assertThat(findItem.getOriginalPrice()).isEqualTo(itemCreateAndUpdateRequest.getOriginalPrice());
+        Assertions.assertThat(findItem.getSalePrice()).isEqualTo(itemCreateAndUpdateRequest.getSalePrice());
         Assertions.assertThat(findItem.getTargetItemList()).hasSize(1);
         Assertions.assertThat(findItem.getResultItemList()).hasSize(1);
         Assertions.assertThat(findItem.getTargetItemList().get(0).getScore()).isEqualTo(20);
-
     }
 
 }

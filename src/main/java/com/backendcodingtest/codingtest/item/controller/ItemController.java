@@ -1,6 +1,6 @@
 package com.backendcodingtest.codingtest.item.controller;
 
-import com.backendcodingtest.codingtest.item.dto.ItemCreateRequest;
+import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
 import com.backendcodingtest.codingtest.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,9 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping("/items/{id}")
-    public ResponseEntity<ItemDetailResponse> findItem(@PathVariable String id) {
+    public ResponseEntity<ItemDetailResponse> findItem(
+            @PathVariable String id
+    ) {
 
         ItemDetailResponse itemDetailResponse = itemService.findItem(id);
 
@@ -25,9 +27,29 @@ public class ItemController {
 
 
     @PostMapping("/items")
-    public ResponseEntity<Void> saveItem(@Valid @RequestBody ItemCreateRequest itemCreateRequest) {
+    public ResponseEntity<Void> saveItem(
+            @Valid @RequestBody ItemCreateAndUpdateRequest itemCreateAndUpdateRequest
+    ) {
 
-        itemService.saveItem(itemCreateRequest);
+        itemService.saveItem(itemCreateAndUpdateRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PutMapping("/items/{id}")
+    public ResponseEntity<Void> updateItem(
+            @PathVariable Long id,
+            @Valid @RequestBody ItemCreateAndUpdateRequest itemCreateAndUpdateRequest
+    ) {
+        itemService.updateItem(id, itemCreateAndUpdateRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/items/{id}")
+    public ResponseEntity<Void> deleteItem(
+            @PathVariable Long id
+    ) {
+        itemService.deleteItem(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

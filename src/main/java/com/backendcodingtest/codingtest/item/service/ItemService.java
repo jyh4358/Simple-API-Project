@@ -1,6 +1,6 @@
 package com.backendcodingtest.codingtest.item.service;
 
-import com.backendcodingtest.codingtest.item.dto.ItemCreateRequest;
+import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
 import com.backendcodingtest.codingtest.item.model.Item;
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.DUPLICATE_ITEM_NAME;
+import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.NOT_FOUNT_ITEM;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,14 +34,14 @@ public class ItemService {
 
 
     @Transactional
-    public void saveItem(ItemCreateRequest itemCreateRequest) {
+    public void saveItem(ItemCreateAndUpdateRequest itemCreateAndUpdateRequest) {
 
-        checkDuplicateItemName(itemCreateRequest.getName());
+        checkDuplicateItemName(itemCreateAndUpdateRequest.getName());
         itemRepository.save(
-                itemCreateRequest.toEntity()
+                itemCreateAndUpdateRequest.toEntity()
         );
 //        todo - 추천 아이템들이 레포에 있는지 확인하는 checker 구현
-//        List<Long> recommendItemIdList = itemCreateRequest.getRecommendItemRequestList().stream()
+//        List<Long> recommendItemIdList = itemCreateAndUpdateRequest.getRecommendItemRequestList().stream()
 //                .map(RecommendItemRequest::getId)
 //                .collect(Collectors.toList());
 //        if (!itemRepository.findAllById(recommendItemIdList).stream()
@@ -49,12 +50,12 @@ public class ItemService {
 //
 //        }
 //        itemRepository.findAllById(recommendItemIdList).containsAll(recommendItemIdList);
-//        List<Long> recommendItemIdList = itemCreateRequest.getRecommendItemRequestList().stream()
+//        List<Long> recommendItemIdList = itemCreateAndUpdateRequest.getRecommendItemRequestList().stream()
 //                .map(RecommendItemRequest::getId)
 //                .collect(Collectors.toList());
 //        List<Item> findRecommendItemList = itemRepository.findAllById(recommendItemIdList);
 //
-//        for (RecommendItemRequest recommendItemRequest : itemCreateRequest.getRecommendItemRequestList()) {
+//        for (RecommendItemRequest recommendItemRequest : itemCreateAndUpdateRequest.getRecommendItemRequestList()) {
 //            for (Item findRecommendItem : findRecommendItemList) {
 //                if (recommendItemRequest.getId() == findRecommendItem.getId()) {
 //                    recommendItemRepository.save(RecommendItem.creatRecommendItem(
@@ -66,6 +67,27 @@ public class ItemService {
 //            }
 //        }
 
+    }
+
+    @Transactional
+    public void updateItem(Long id, ItemCreateAndUpdateRequest itemCreateAndUpdateRequest) {
+        Item findItem = itemRepository.findById(id).orElseThrow(NOT_FOUNT_ITEM::getException);
+        checkDuplicateItemName(itemCreateAndUpdateRequest.getName());
+
+        findItem.updateItem(
+                itemCreateAndUpdateRequest.getName(),
+                itemCreateAndUpdateRequest.getImageUrl(),
+                itemCreateAndUpdateRequest.getContentUrl(),
+                itemCreateAndUpdateRequest.getOriginalPrice(),
+                itemCreateAndUpdateRequest.getSalePrice()
+        );
+    }
+
+    @Transactional
+    public void deleteItem(Long id) {
+        Item findItem = itemRepository.findById(id).orElseThrow(NOT_FOUNT_ITEM::getException);
+
+        itemRepository.delete(findItem);
     }
 
 
@@ -82,5 +104,4 @@ public class ItemService {
 
         return Arrays.stream(id.split(",")).map(s -> Long.parseLong(s)).collect(Collectors.toList());
     }
-
 }

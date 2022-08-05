@@ -14,7 +14,7 @@ import static com.backendcodingtest.codingtest.common.validatemessages.ItemReque
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class ItemCreateRequest {
+public class ItemCreateAndUpdateRequest {
     @NotBlank(message = ITEM_NAME_BLANK_MESSAGES)
     private String name;
     @NotBlank(message = ITEM_IMAGE_URL_BLANK_MESSAGES)

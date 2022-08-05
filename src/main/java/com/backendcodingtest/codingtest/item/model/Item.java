@@ -42,4 +42,18 @@ public class Item extends BasicEntity {
         this.originalPrice = originalPrice;
         this.salePrice = salePrice;
     }
+
+    public void updateItem(
+            String name,
+            String imageUrl,
+            String contentUrl,
+            int originalPrice,
+            int salePrice
+    ) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.contentUrl = contentUrl;
+        this.originalPrice = originalPrice;
+        this.salePrice = salePrice;
+    }
 }
