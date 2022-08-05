@@ -1,5 +1,6 @@
 package com.backendcodingtest.codingtest.item.service;
 
+import com.backendcodingtest.codingtest.common.util.StringEditor;
 import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
@@ -25,7 +26,7 @@ public class ItemService {
 
 
     public ItemDetailResponse findItem(String id) {
-        List<Long> ids = converterStringToStringList(id);
+        List<Long> ids = StringEditor.converterStringToStringList(id);
 
         List<Item> findItemList = itemRepository.findAllById(ids);
 
@@ -95,13 +96,5 @@ public class ItemService {
         if (itemRepository.existsByName(name)) {
             throw DUPLICATE_ITEM_NAME.getException();
         }
-    }
-
-    public List<Long> converterStringToStringList(String id) {
-        if (id == null) {
-            return new ArrayList<>();
-        }
-
-        return Arrays.stream(id.split(",")).map(s -> Long.parseLong(s)).collect(Collectors.toList());
     }
 }

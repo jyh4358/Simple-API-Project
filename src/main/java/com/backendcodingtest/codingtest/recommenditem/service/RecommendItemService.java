@@ -1,6 +1,7 @@
 package com.backendcodingtest.codingtest.recommenditem.service;
 
 import com.backendcodingtest.codingtest.common.exception.ExceptionMessage;
+import com.backendcodingtest.codingtest.common.util.StringEditor;
 import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.model.Item;
 import com.backendcodingtest.codingtest.item.repository.ItemRepository;
@@ -33,7 +34,7 @@ public class RecommendItemService {
     private final ItemRepository itemRepository;
 
     public RecommendItemResponses findRecommendItem(String id) {
-        List<Long> itemIdList = converterStringToStringList(id);
+        List<Long> itemIdList = StringEditor.converterStringToStringList(id);
 
         // todo - db에 해당 item이 있는지 check 구현 -> 생각해보니 필요없을 듯
 
@@ -92,13 +93,6 @@ public class RecommendItemService {
         recommendItemRepository.saveAll(recommendItemList);
     }
 
-    public List<Long> converterStringToStringList(String id) {
-        if (id == null) {
-            return new ArrayList<>();
-        }
-
-        return Arrays.stream(id.split(",")).map(s -> Long.parseLong(s)).collect(Collectors.toList());
-    }
 
     private List<RecommendItemResponse> createRecommendItemResponses(List<Item> findTargetItemList) {
         List<RecommendItemResponse> recommendItemResponseList = new ArrayList<>();
