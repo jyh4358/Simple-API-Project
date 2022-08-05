@@ -16,7 +16,7 @@ public class RecommendItemController {
 
     private final RecommendItemService recommendItemService;
 
-    @GetMapping("/recommend-items/{id}")
+    @GetMapping("/target-items/{id}/recommend-items")
     public ResponseEntity<RecommendItemResponses> findRecommendItem(
             @PathVariable String id
     ) {
@@ -24,12 +24,22 @@ public class RecommendItemController {
         return new ResponseEntity<>(recommendItemResponses, HttpStatus.OK);
     }
 
-    @PostMapping("/recommend-items")
+    @PostMapping("/target-items/recommend-items")
     public ResponseEntity<Void> saveRecommendItem(
             @Valid @RequestBody RecommendItemRequests recommendItemRequests
     ) {
         recommendItemService.saveRecommendItem(recommendItemRequests);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @DeleteMapping("/target-items/{targetId}/recommend-items/{recommendId}")
+    public ResponseEntity<Void> deleteRecommendItem(
+            @PathVariable Long targetId,
+            @PathVariable Long recommendId
+    ) {
+        recommendItemService.deleteRecommendItem(targetId, recommendId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

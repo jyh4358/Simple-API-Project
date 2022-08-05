@@ -3,6 +3,7 @@ package com.backendcodingtest.codingtest.recommenditem.service;
 import com.backendcodingtest.codingtest.common.ServiceBaseTest;
 import com.backendcodingtest.codingtest.common.exception.httpexception.NotFountException;
 import com.backendcodingtest.codingtest.item.model.Item;
+import com.backendcodingtest.codingtest.item.service.ItemService;
 import com.backendcodingtest.codingtest.recommenditem.dto.*;
 import com.backendcodingtest.codingtest.recommenditem.dto.response.RecommendItemResponse;
 import com.backendcodingtest.codingtest.recommenditem.dto.response.RecommendItemResponses;
@@ -20,6 +21,9 @@ public class RecommendItemServiceTest extends ServiceBaseTest {
 
     @Autowired
     private RecommendItemService recommendItemService;
+
+    @Autowired
+    private ItemService itemService;
 
     @DisplayName("특정 상품의 추천 상품을 등록한다.")
     @Test
@@ -110,6 +114,7 @@ public class RecommendItemServiceTest extends ServiceBaseTest {
                         recommendItemService.saveRecommendItem(recommendItemRequests))
                 .isInstanceOf(NotFountException.class);
     }
+
     @DisplayName("특정 상품의 추천 상품을 조회한다.")
     @Test
     public void 추천_상품_조회() {
@@ -123,9 +128,6 @@ public class RecommendItemServiceTest extends ServiceBaseTest {
                         5000
                 )
         );
-
-        List<RecommendItemRequest> recommendItemRequestList = new ArrayList<>();
-
         Item resultItem1 = itemRepository.save(
                 new Item(
                         "상품",
@@ -180,6 +182,143 @@ public class RecommendItemServiceTest extends ServiceBaseTest {
         Assertions.assertThat(resultItemResponse2.getSalePrice()).isEqualTo(resultItem2.getSalePrice());
         Assertions.assertThat(resultItemResponse2.getScore()).isEqualTo(19);
     }
+
+    @DisplayName("특정 상품의 추천 상품 삭제한다.")
+    @Test
+    public void 추천_상품_삭제() {
+        // given
+        Item targetItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.imageUrl.com",
+                        "www.contentUrl.com",
+                        10000,
+                        5000
+                )
+        );
+
+        List<RecommendItemRequest> recommendItemRequestList = new ArrayList<>();
+
+        Item resultItem1 = itemRepository.save(
+                new Item(
+                        "상품2",
+                        "www.imageUrl.com",
+                        "www.contentUrl.com",
+                        10000,
+                        5000
+                )
+        );
+        Item resultItem2 = itemRepository.save(
+                new Item(
+                        "상품3",
+                        "www.imageUrl2.com",
+                        "www.contentUrl2.com",
+                        20000,
+                        10000
+                )
+        );
+        recommendItemRepository.save(new RecommendItem(targetItem, resultItem1, 20));
+        recommendItemRepository.save(new RecommendItem(targetItem, resultItem2, 19));
+
+
+        // when
+        recommendItemService.deleteRecommendItem(targetItem.getId(), resultItem1.getId());
+
+        // then
+        List<RecommendItem> findRecommendItems = recommendItemRepository.findAll();
+        Assertions.assertThat(findRecommendItems).hasSize(1);
+
+    }
+
+    @DisplayName("[예외]특정 상품의 추천 상품 삭제 시 특정 상품이 존재하지 않을 경우 예외가 발생한다.")
+    @Test
+    public void 추천_상품_삭제_예외1() {
+        // given
+        Item targetItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.imageUrl.com",
+                        "www.contentUrl.com",
+                        10000,
+                        5000
+                )
+        );
+
+        Item resultItem1 = itemRepository.save(
+                new Item(
+                        "상품2",
+                        "www.imageUrl.com",
+                        "www.contentUrl.com",
+                        10000,
+                        5000
+                )
+        );
+        Item resultItem2 = itemRepository.save(
+                new Item(
+                        "상품3",
+                        "www.imageUrl2.com",
+                        "www.contentUrl2.com",
+                        20000,
+                        10000
+                )
+        );
+        recommendItemRepository.save(new RecommendItem(targetItem, resultItem1, 20));
+        recommendItemRepository.save(new RecommendItem(targetItem, resultItem2, 19));
+
+        itemService.deleteItem(targetItem.getId());
+
+
+        // when&then
+        Assertions.assertThatThrownBy(() ->
+                recommendItemService.deleteRecommendItem(targetItem.getId(), resultItem1.getId())
+        ).isInstanceOf(NotFountException.class);
+    }
+
+    @DisplayName("[예외]특정 상품의 추천 상품 삭제 시 추천 상품이 존재하지 않을 경우 예외가 발생한다.")
+    @Test
+    public void 추천_상품_삭제_예외2() {
+        // given
+        Item targetItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.imageUrl.com",
+                        "www.contentUrl.com",
+                        10000,
+                        5000
+                )
+        );
+        Item resultItem1 = itemRepository.save(
+                new Item(
+                        "상품2",
+                        "www.imageUrl.com",
+                        "www.contentUrl.com",
+                        10000,
+                        5000
+                )
+        );
+        Item resultItem2 = itemRepository.save(
+                new Item(
+                        "상품3",
+                        "www.imageUrl2.com",
+                        "www.contentUrl2.com",
+                        20000,
+                        10000
+                )
+        );
+
+        recommendItemRepository.save(new RecommendItem(targetItem, resultItem1, 20));
+        recommendItemRepository.save(new RecommendItem(targetItem, resultItem2, 19));
+
+        itemService.deleteItem(resultItem1.getId());
+
+
+        // when&then
+        Assertions.assertThatThrownBy(() ->
+                recommendItemService.deleteRecommendItem(targetItem.getId(), resultItem1.getId())
+        ).isInstanceOf(NotFountException.class);
+    }
+
+
 
 
 }

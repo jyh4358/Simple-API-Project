@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -23,10 +24,10 @@ public class Item extends BasicEntity {
     private int originalPrice;
     private int salePrice;
 
-    @OneToMany(mappedBy = "targetItem")
+    @OneToMany(mappedBy = "targetItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecommendItem> targetItemList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "resultItem")
+    @OneToMany(mappedBy = "resultItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecommendItem> resultItemList = new ArrayList<>();
 
     @Builder

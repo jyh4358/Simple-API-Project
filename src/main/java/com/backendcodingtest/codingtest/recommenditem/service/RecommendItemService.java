@@ -1,5 +1,6 @@
 package com.backendcodingtest.codingtest.recommenditem.service;
 
+import com.backendcodingtest.codingtest.common.exception.ExceptionMessage;
 import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.model.Item;
 import com.backendcodingtest.codingtest.item.repository.ItemRepository;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.NOT_FOUNT_ITEM;
+import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.NOT_FOUNT_RECOMMEND_ITEM;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,6 +57,18 @@ public class RecommendItemService {
         recommendItemRepository.deleteAllByTargetItemId(targetItem.getId());
 
         recommendItemCreateAndSave(targetItem, recommendItemRequestList, resultItemList);
+    }
+
+    @Transactional
+    public void deleteRecommendItem(Long targetId, Long recommendId) {
+        Item targetItem = itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
+        Item resultItem = itemRepository.findById(recommendId).orElseThrow(NOT_FOUNT_ITEM::getException);
+
+        RecommendItem recommendItem = recommendItemRepository
+                .findByTargetItemIdAndResultItemId(targetItem.getId(), resultItem.getId())
+                .orElseThrow(NOT_FOUNT_RECOMMEND_ITEM::getException);
+
+        recommendItemRepository.delete(recommendItem);
     }
 
 
@@ -110,4 +124,5 @@ public class RecommendItemService {
 
         return resultItemResponse;
     }
+
 }
