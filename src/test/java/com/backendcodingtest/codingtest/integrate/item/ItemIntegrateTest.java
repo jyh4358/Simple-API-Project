@@ -74,13 +74,12 @@ public class ItemIntegrateTest extends IntegrateBaseTest {
         mockMvc.perform(get("/items/{id}", savedItem.getId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("itemDetailList", hasSize(1)))
-                .andExpect(jsonPath("itemDetailList.[0].id").value(savedItem.getId()))
-                .andExpect(jsonPath("itemDetailList.[0].name").value(savedItem.getName()))
-                .andExpect(jsonPath("itemDetailList.[0].imageUrl").value(savedItem.getImageUrl()))
-                .andExpect(jsonPath("itemDetailList.[0].contentUrl").value(savedItem.getContentUrl()))
-                .andExpect(jsonPath("itemDetailList.[0].originalPrice").value(savedItem.getOriginalPrice()))
-                .andExpect(jsonPath("itemDetailList.[0].salePrice").value(savedItem.getSalePrice()))
+                .andExpect(jsonPath("id").value(savedItem.getId()))
+                .andExpect(jsonPath("name").value(savedItem.getName()))
+                .andExpect(jsonPath("imageUrl").value(savedItem.getImageUrl()))
+                .andExpect(jsonPath("contentUrl").value(savedItem.getContentUrl()))
+                .andExpect(jsonPath("originalPrice").value(savedItem.getOriginalPrice()))
+                .andExpect(jsonPath("salePrice").value(savedItem.getSalePrice()))
                 .andDo(print());
     }
 
