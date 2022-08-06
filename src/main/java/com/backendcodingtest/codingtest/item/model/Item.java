@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -18,9 +19,13 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item extends BasicEntity {
 
+    @Column(nullable = false, length = 50)
     private String name;
+    @Column(nullable = false, length = 100)
     private String imageUrl;
+    @Column(nullable = false, length = 100)
     private String contentUrl;
+    @Column(nullable = false)
     private int originalPrice;
     private int salePrice;
 
