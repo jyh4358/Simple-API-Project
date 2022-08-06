@@ -33,7 +33,7 @@ public class RecommendItemController {
     ) {
 
         recommendItemService.saveRecommendItem(id, recommendItemRequests);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/target-items/{id}/recommend-items")
