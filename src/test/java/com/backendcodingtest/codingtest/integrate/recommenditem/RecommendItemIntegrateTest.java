@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class RecommendItemIntegrateTest extends IntegrateBaseTest {
         mockMvc.perform(post("/target-items/{id}/recommend-items", savedTargetItem.getId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(recommendItemRequests)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
 
         // then
@@ -157,6 +158,69 @@ public class RecommendItemIntegrateTest extends IntegrateBaseTest {
                 .map(Item::getId)
                 .collect(Collectors.toList());
         Assertions.assertThat(findResultItemId).containsOnly(savedResultItem1.getId(), savedResultItem2.getId());
+    }
+
+    @DisplayName("추천 상품 수정 통합테스트")
+    @Test
+    public void  추천_상품_수정_통합테스트() throws Exception {
+
+        // given
+        Item targetItem = itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.imageUrl.com",
+                        "www.contentUrl.com",
+                        10000,
+                        5000
+                )
+        );
+
+        for (int i = 0; i < 2; i++) {
+            Item resultItem = itemRepository.save(
+                    new Item(
+                            "상품" + i,
+                            "www.imageUrl" + i + ".com",
+                            "www.contentUrl" + i + ".com",
+                            10000 * i,
+                            5000 * i
+                    )
+            );
+            recommendItemRepository.save(new RecommendItem(targetItem, resultItem, 20 - i));
+        }
+
+        List<RecommendItemRequest> recommendItemRequestList = new ArrayList<>();
+        List<Item> resultItemList = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            Item resultItem = itemRepository.save(
+                    new Item(
+                            "수정 상품" + i,
+                            "www.imageUrl" + i + ".com",
+                            "www.contentUrl" + i + ".com",
+                            10000 * i,
+                            5000 * i
+                    )
+            );
+            resultItemList.add(resultItem);
+            recommendItemRequestList.add(new RecommendItemRequest(resultItem.getId(), 20 - i));
+        }
+
+        RecommendItemRequests recommendItemRequests = new RecommendItemRequests(recommendItemRequestList);
+
+        // when
+        mockMvc.perform(put("/target-items/{id}/recommend-items", targetItem.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(recommendItemRequests)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        // then
+        List<RecommendItem> recommendItemList = recommendItemRepository.findAll();
+        Assertions.assertThat(recommendItemList).hasSize(2);
+
+        Assertions.assertThat(recommendItemList.stream()
+                        .map(RecommendItem::getResultItem)
+                        .map(Item::getId))
+                .containsOnly(resultItemList.get(0).getId(), resultItemList.get(1).getId());
     }
 
     @DisplayName("추천 상품 삭제 통합테스트")

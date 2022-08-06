@@ -2,4 +2,4 @@ spring:
   profiles:
     include:
       - db
-    active: h2
+    active: dev
