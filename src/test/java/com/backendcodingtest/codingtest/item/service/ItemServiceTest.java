@@ -5,6 +5,7 @@ import com.backendcodingtest.codingtest.common.exception.httpexception.ExistExce
 import com.backendcodingtest.codingtest.common.exception.httpexception.NotFountException;
 import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
+import com.backendcodingtest.codingtest.item.dto.ItemDetailResponses;
 import com.backendcodingtest.codingtest.item.model.Item;
 import com.backendcodingtest.codingtest.recommenditem.dto.RecommendItemRequest;
 import org.assertj.core.api.Assertions;
@@ -112,53 +113,37 @@ public class ItemServiceTest extends ServiceBaseTest {
         Assertions.assertThat(itemDetailResponse.getSalePrice()).isEqualTo(savedItem.getSalePrice());
     }
 
-//    @DisplayName("여러개의 상품을 조회한다.")
-//    @Test
-//    public void 상품_조회2() {
-//
-//        // given
-//        Item savedItem1 = itemRepository.save(
-//                new Item(
-//                        "상품",
-//                        "www.imageUrl.com",
-//                        "www.contentUrl.com",
-//                        10000,
-//                        5000
-//                )
-//        );
-//        Item savedItem2 = itemRepository.save(
-//                new Item(
-//                        "상품2",
-//                        "www.imageUrl2.com",
-//                        "www.contentUrl2.com",
-//                        20000,
-//                        10000
-//                )
-//        );
-//
-//
-//        // when
-//        ItemDetailResponse item = itemService.findItem(savedItem2.getId());
-//
-//        // then
-//        Assertions.assertThat(itemDetailResponses.getItemDetailResponseList()).hasSize(2);
-//
-//        ItemDetailResponse itemDetailResponse1 = itemDetailResponses.getItemDetailResponseList().get(0);
-//        Assertions.assertThat(itemDetailResponse1.getId()).isEqualTo(savedItem1.getId());
-//        Assertions.assertThat(itemDetailResponse1.getName()).isEqualTo(savedItem1.getName());
-//        Assertions.assertThat(itemDetailResponse1.getImageUrl()).isEqualTo(savedItem1.getImageUrl());
-//        Assertions.assertThat(itemDetailResponse1.getContentUrl()).isEqualTo(savedItem1.getContentUrl());
-//        Assertions.assertThat(itemDetailResponse1.getOriginalPrice()).isEqualTo(savedItem1.getOriginalPrice());
-//        Assertions.assertThat(itemDetailResponse1.getSalePrice()).isEqualTo(savedItem1.getSalePrice());
-//
-//        ItemDetailResponse itemDetailResponse2 = itemDetailResponses.getItemDetailResponseList().get(1);
-//        Assertions.assertThat(itemDetailResponse2.getId()).isEqualTo(savedItem2.getId());
-//        Assertions.assertThat(itemDetailResponse2.getName()).isEqualTo(savedItem2.getName());
-//        Assertions.assertThat(itemDetailResponse2.getImageUrl()).isEqualTo(savedItem2.getImageUrl());
-//        Assertions.assertThat(itemDetailResponse2.getContentUrl()).isEqualTo(savedItem2.getContentUrl());
-//        Assertions.assertThat(itemDetailResponse2.getOriginalPrice()).isEqualTo(savedItem2.getOriginalPrice());
-//        Assertions.assertThat(itemDetailResponse2.getSalePrice()).isEqualTo(savedItem2.getSalePrice());
-//    }
+    @DisplayName("전체 상품을 조회한다.")
+    @Test
+    public void 전체_상품_조회2() {
+
+        // given
+        itemRepository.save(
+                new Item(
+                        "상품",
+                        "www.imageUrl.com",
+                        "www.contentUrl.com",
+                        10000,
+                        5000
+                )
+        );
+        itemRepository.save(
+                new Item(
+                        "상품2",
+                        "www.imageUrl2.com",
+                        "www.contentUrl2.com",
+                        20000,
+                        10000
+                )
+        );
+
+
+        // when
+        ItemDetailResponses itemDetailResponses = itemService.findAllItem();
+
+        // then
+        Assertions.assertThat(itemDetailResponses.getItemDetailResponseList()).hasSize(2);
+    }
 
     @DisplayName("상품을 수정한다.")
     @Test

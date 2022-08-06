@@ -83,6 +83,47 @@ public class ItemIntegrateTest extends IntegrateBaseTest {
                 .andDo(print());
     }
 
+    @DisplayName("전체 상품 조회 통합테스트")
+    @Test
+    public void 전체_상품_조회_통합테스트() throws Exception {
+
+        // given
+        Item savedItem1 = itemRepository.save(new Item(
+                "양발",
+                "www.image-url.com",
+                "www.content-url.com",
+                10000,
+                5000
+        ));
+        Item savedItem2 = itemRepository.save(new Item(
+                "양발2",
+                "www.image-url2.com",
+                "www.content-url2.com",
+                20000,
+                10000
+        ));
+
+
+
+        // when&then
+        mockMvc.perform(get("/items")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("itemDetailResponseList.[0].id").value(savedItem1.getId()))
+                .andExpect(jsonPath("itemDetailResponseList.[0].name").value(savedItem1.getName()))
+                .andExpect(jsonPath("itemDetailResponseList.[0].imageUrl").value(savedItem1.getImageUrl()))
+                .andExpect(jsonPath("itemDetailResponseList.[0].contentUrl").value(savedItem1.getContentUrl()))
+                .andExpect(jsonPath("itemDetailResponseList.[0].originalPrice").value(savedItem1.getOriginalPrice()))
+                .andExpect(jsonPath("itemDetailResponseList.[0].salePrice").value(savedItem1.getSalePrice()))
+                .andExpect(jsonPath("itemDetailResponseList.[1].id").value(savedItem2.getId()))
+                .andExpect(jsonPath("itemDetailResponseList.[1].name").value(savedItem2.getName()))
+                .andExpect(jsonPath("itemDetailResponseList.[1].imageUrl").value(savedItem2.getImageUrl()))
+                .andExpect(jsonPath("itemDetailResponseList.[1].contentUrl").value(savedItem2.getContentUrl()))
+                .andExpect(jsonPath("itemDetailResponseList.[1].originalPrice").value(savedItem2.getOriginalPrice()))
+                .andExpect(jsonPath("itemDetailResponseList.[1].salePrice").value(savedItem2.getSalePrice()))
+                .andDo(print());
+    }
+
     @DisplayName("상품 수정 통합테스트")
     @Test
     public void 상품_수정_통합테스트() throws Exception {

@@ -29,6 +29,15 @@ public class ItemService {
         return ItemDetailResponse.of(findItem);
     }
 
+    public ItemDetailResponses findAllItem() {
+
+        List<Item> findAllItem = itemRepository.findAll();
+        List<ItemDetailResponse> itemDetailResponseList = findAllItem.stream()
+                .map(ItemDetailResponse::of)
+                .collect(Collectors.toList());
+        return ItemDetailResponses.of(itemDetailResponseList);
+    }
+
 
     @Transactional
     public void saveItem(ItemCreateAndUpdateRequest itemCreateAndUpdateRequest) {
@@ -93,4 +102,5 @@ public class ItemService {
             throw DUPLICATE_ITEM_NAME.getException();
         }
     }
+
 }

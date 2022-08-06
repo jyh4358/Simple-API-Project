@@ -16,6 +16,12 @@ import javax.validation.Valid;
 public class ItemController {
     private final ItemService itemService;
 
+    @GetMapping("/items")
+    public ResponseEntity<ItemDetailResponses> findAllItem() {
+        ItemDetailResponses itemDetailResponses = itemService.findAllItem();
+        return new ResponseEntity<>(itemDetailResponses, HttpStatus.OK);
+    }
+
     @GetMapping("/items/{id}")
     public ResponseEntity<ItemDetailResponse> findItem(
             @PathVariable Long id
