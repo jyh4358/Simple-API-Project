@@ -78,10 +78,10 @@ public class RecommendItemDocumentTest extends DocumentBaseTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("요청 데이터의 타입필드, 요청 객체는 JSON 형태로 요청")
                         ),
                         requestFields(
-                                fieldWithPath("recommendItemRequestList.[0].id").type("상품 식별자").description("상품명"),
-                                fieldWithPath("recommendItemRequestList.[0].score").type("String").description("해당 연관 상품코드의 연관도 점수"),
-                                fieldWithPath("recommendItemRequestList.[1].id").type("상품 식별자").description("상품명"),
-                                fieldWithPath("recommendItemRequestList.[1].score").type("String").description("해당 연관 상품코드의 연관도 점수")
+                                fieldWithPath("recommendItemRequestList.[0].id").type("Long").description("상품명"),
+                                fieldWithPath("recommendItemRequestList.[0].score").type("int").description("해당 연관 상품코드의 연관도 점수"),
+                                fieldWithPath("recommendItemRequestList.[1].id").type("Long").description("상품명"),
+                                fieldWithPath("recommendItemRequestList.[1].score").type("int").description("해당 연관 상품코드의 연관도 점수")
                         )
                 ));
     }
@@ -130,7 +130,7 @@ public class RecommendItemDocumentTest extends DocumentBaseTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("응답 데이터의 타입필드, 응답 객체는 JSON 형태로 응답")
                         ),
                         requestParameters(
-                                parameterWithName("id").description("상품 식별자")
+                                parameterWithName("id").description("선택한 상품들의 식별자 (콤마','로 연결)")
                         ),
                         responseFields(
                                 fieldWithPath("recommendItemResponseList.[0].target.id").type("Long").description("상품 식별자"),
@@ -146,8 +146,8 @@ public class RecommendItemDocumentTest extends DocumentBaseTest {
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].originalPrice").type("int").description("상품 가격"),
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].salePrice").type("int").description("상품 판매 가격"),
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].recommendId").type("Long").description("상품 식별자"),
-                                fieldWithPath("recommendItemResponseList.[0].results.[0].score").type("int").description("상품 판매 가격"),
-                                fieldWithPath("recommendItemResponseList.[0].results.[0].rank").type("int").description("상품 판매 가격"),
+                                fieldWithPath("recommendItemResponseList.[0].results.[0].score").type("int").description("해당 연관 상품코드의 연관도 점수"),
+                                fieldWithPath("recommendItemResponseList.[0].results.[0].rank").type("int").description("해당 연관 상품코드의 연관도 순위"),
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].id").type("Long").description("상품 식별자"),
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].name").type("String").description("상품 이미지 url"),
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].imageUrl").type("String").description("상품 이미지 url"),
@@ -155,8 +155,8 @@ public class RecommendItemDocumentTest extends DocumentBaseTest {
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].originalPrice").type("int").description("상품 가격"),
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].salePrice").type("int").description("상품 판매 가격"),
                                 fieldWithPath("recommendItemResponseList.[0].results.[0].recommendId").type("Long").description("상품 식별자"),
-                                fieldWithPath("recommendItemResponseList.[0].results.[0].score").type("int").description("상품 판매 가격"),
-                                fieldWithPath("recommendItemResponseList.[0].results.[0].rank").type("int").description("상품 판매 가격")
+                                fieldWithPath("recommendItemResponseList.[0].results.[0].score").type("int").description("해당 연관 상품코드의 연관도 점수"),
+                                fieldWithPath("recommendItemResponseList.[0].results.[0].rank").type("int").description("해당 연관 상품코드의 연관도 순위")
                         )
                 ));
     }
@@ -221,9 +221,9 @@ public class RecommendItemDocumentTest extends DocumentBaseTest {
                         ),
                         requestFields(
                                 fieldWithPath("recommendItemRequestList.[0].id").type("상품 식별자").description("상품명"),
-                                fieldWithPath("recommendItemRequestList.[0].score").type("String").description("해당 연관 상품코드의 연관도 점수"),
+                                fieldWithPath("recommendItemRequestList.[0].score").type("int").description("해당 연관 상품코드의 연관도 점수"),
                                 fieldWithPath("recommendItemRequestList.[1].id").type("상품 식별자").description("상품명"),
-                                fieldWithPath("recommendItemRequestList.[1].score").type("String").description("해당 연관 상품코드의 연관도 점수")
+                                fieldWithPath("recommendItemRequestList.[1].score").type("int").description("해당 연관 상품코드의 연관도 점수")
                         )
                 ));
     }
