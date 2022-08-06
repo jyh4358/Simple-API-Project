@@ -1,6 +1,5 @@
 package com.backendcodingtest.codingtest.recommenditem.dto;
 
-import com.backendcodingtest.codingtest.common.validatemessages.ItemRequestMessages;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

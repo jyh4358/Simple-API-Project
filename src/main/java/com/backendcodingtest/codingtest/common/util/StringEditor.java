@@ -9,6 +9,7 @@ public class StringEditor {
     private static final String COMMA = ",";
 
     public static List<Long> converterStringToStringList(String id) {
+
         if (id == null) {
             return new ArrayList<>();
         }

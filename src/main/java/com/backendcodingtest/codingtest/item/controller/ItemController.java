@@ -21,10 +21,8 @@ public class ItemController {
     ) {
 
         ItemDetailResponse itemDetailResponse = itemService.findItem(id);
-
         return new ResponseEntity<>(itemDetailResponse, HttpStatus.OK);
     }
-
 
     @PostMapping("/items")
     public ResponseEntity<Void> saveItem(
@@ -40,6 +38,7 @@ public class ItemController {
             @PathVariable Long id,
             @Valid @RequestBody ItemCreateAndUpdateRequest itemCreateAndUpdateRequest
     ) {
+
         itemService.updateItem(id, itemCreateAndUpdateRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -48,6 +47,7 @@ public class ItemController {
     public ResponseEntity<Void> deleteItem(
             @PathVariable Long id
     ) {
+
         itemService.deleteItem(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

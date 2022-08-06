@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,11 +24,10 @@ public class ItemService {
 
 
     public ItemDetailResponse findItem(String id) {
+
         List<Long> ids = StringEditor.converterStringToStringList(id);
-
         List<Item> findItemList = itemRepository.findAllById(ids);
-
-        return ItemDetailResponse.of(findItemList.stream().map(findItem -> ItemDetail.of(findItem)).collect(Collectors.toList()));
+        return ItemDetailResponse.of(findItemList.stream().map(ItemDetail::of).collect(Collectors.toList()));
     }
 
 
@@ -72,6 +69,7 @@ public class ItemService {
 
     @Transactional
     public void updateItem(Long id, ItemCreateAndUpdateRequest itemCreateAndUpdateRequest) {
+
         Item findItem = itemRepository.findById(id).orElseThrow(NOT_FOUNT_ITEM::getException);
         checkDuplicateItemName(itemCreateAndUpdateRequest.getName());
 
@@ -87,7 +85,6 @@ public class ItemService {
     @Transactional
     public void deleteItem(Long id) {
         Item findItem = itemRepository.findById(id).orElseThrow(NOT_FOUNT_ITEM::getException);
-
         itemRepository.delete(findItem);
     }
 

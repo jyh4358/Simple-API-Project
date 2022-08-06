@@ -1,11 +1,11 @@
 package com.backendcodingtest.codingtest.recommenditem.service;
 
-import com.backendcodingtest.codingtest.common.exception.ExceptionMessage;
 import com.backendcodingtest.codingtest.common.util.StringEditor;
 import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.model.Item;
 import com.backendcodingtest.codingtest.item.repository.ItemRepository;
-import com.backendcodingtest.codingtest.recommenditem.dto.*;
+import com.backendcodingtest.codingtest.recommenditem.dto.RecommendItemRequest;
+import com.backendcodingtest.codingtest.recommenditem.dto.RecommendItemRequests;
 import com.backendcodingtest.codingtest.recommenditem.dto.response.RecommendItemResponse;
 import com.backendcodingtest.codingtest.recommenditem.dto.response.RecommendItemResponses;
 import com.backendcodingtest.codingtest.recommenditem.dto.response.ResultItemResponse;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
