@@ -75,11 +75,12 @@ endif::[]
 상품의 식별자 정보를 통해 상세 정보를 조회한다.
 
 - 요청
+
 include::{snippets}/item-detail/http-request.adoc[]
 
 - 응답
-include::{snippets}/item-detail/http-response.adoc[]
 
+include::{snippets}/item-detail/http-response.adoc[]
 include::{snippets}/item-detail/response-headers.adoc[]
 include::{snippets}/item-detail/response-fields.adoc[]
 
@@ -90,9 +91,11 @@ include::{snippets}/item-detail/response-fields.adoc[]
 전체 상품의 상세 정보 리스트를 조회한다.
 
 - 요청
+
 include::{snippets}/item-list/http-request.adoc[]
 
 - 응답
+
 include::{snippets}/item-list/http-response.adoc[]
 include::{snippets}/item-list/response-headers.adoc[]
 include::{snippets}/item-list/response-fields.adoc[]
@@ -104,6 +107,7 @@ include::{snippets}/item-list/response-fields.adoc[]
 상품 정보 입력을 통해 상품 등록을 진행한다.
 
 - 요청
+
 include::{snippets}/item-save/http-request.adoc[]
 include::{snippets}/item-save/request-headers.adoc[]
 include::{snippets}/item-save/request-fields.adoc[]
@@ -115,6 +119,7 @@ include::{snippets}/item-save/request-fields.adoc[]
 새로운 정보를 입력하여 상품 정보 수정을 진행한다.
 
 - 요청
+
 include::{snippets}/item-modify/http-request.adoc[]
 include::{snippets}/item-modify/request-headers.adoc[]
 include::{snippets}/item-modify/request-fields.adoc[]
@@ -126,6 +131,7 @@ include::{snippets}/item-modify/request-fields.adoc[]
 등록된 상품의 식별자를 이용하여 해당 상품 삭제를 진행한다.
 
 - 요청
+
 include::{snippets}/item-delete/http-request.adoc[]
 
 
@@ -139,10 +145,12 @@ include::{snippets}/item-delete/http-request.adoc[]
 선택한 상품들의 식별자들로 선택된 상품, 선택된 상품의 추천상품 정보들을 조회한다.
 
 - 요청
+
 include::{snippets}/recommendItem-list/http-request.adoc[]
 include::{snippets}/recommendItem-list/request-parameters.adoc[]
 
 - 응답
+
 include::{snippets}/recommendItem-list/http-response.adoc[]
 include::{snippets}/recommendItem-list/response-headers.adoc[]
 include::{snippets}/recommendItem-list/response-fields.adoc[]
@@ -153,7 +161,8 @@ include::{snippets}/recommendItem-list/response-fields.adoc[]
 
 선택한 상품과 관련된 추천 상품을 선택하여 추천 상품들을 등록한다.
 
-==== 요청
+- 요청
+
 include::{snippets}/recommendItem-save/http-request.adoc[]
 include::{snippets}/recommendItem-save/request-headers.adoc[]
 include::{snippets}/recommendItem-save/request-fields.adoc[]
@@ -164,7 +173,8 @@ include::{snippets}/recommendItem-save/request-fields.adoc[]
 
 선택한 상품의 기존 추천 상품들을 제거하고, 새로운 추천 상품들을 선택하여 수정한다.
 
-==== 요청
+- 요청
+
 include::{snippets}/recommendItem-modify/http-request.adoc[]
 include::{snippets}/recommendItem-modify/request-headers.adoc[]
 include::{snippets}/recommendItem-modify/request-fields.adoc[]
@@ -175,5 +185,6 @@ include::{snippets}/recommendItem-modify/request-fields.adoc[]
 
 선택한 상품의 추천 상품들 중 1개의 추천 상품 식별자로 해당 추천 상품을 삭제한다.
 
-=== 요청
+- 요청
+
 include::{snippets}/recommendItem-delete/http-request.adoc[]
