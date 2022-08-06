@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface RecommendItemRepository extends JpaRepository<RecommendItem, Long> {
     void deleteAllByTargetItemId(Long id);
 
+    boolean existsByTargetItemId(Long id);
+
     Optional<RecommendItem> findByTargetItemIdAndResultItemId(Long targetId, Long resultId);
 
 }

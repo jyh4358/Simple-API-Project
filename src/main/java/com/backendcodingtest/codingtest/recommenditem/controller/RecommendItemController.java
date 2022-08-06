@@ -16,27 +16,42 @@ public class RecommendItemController {
 
     private final RecommendItemService recommendItemService;
 
-    @GetMapping("/target-items/{id}/recommend-items")
+    @GetMapping("/target-items/recommend-items")
     public ResponseEntity<RecommendItemResponses> findRecommendItem(
-            @PathVariable String id
+            @RequestParam String id
     ) {
-        RecommendItemResponses recommendItemResponses = recommendItemService.findRecommendItem(id);
+
+        RecommendItemResponses recommendItemResponses = recommendItemService.findRecommendItems(id);
         return new ResponseEntity<>(recommendItemResponses, HttpStatus.OK);
     }
 
-    @PostMapping("/target-items/recommend-items")
+
+    @PostMapping("/target-items/{id}/recommend-items")
     public ResponseEntity<Void> saveRecommendItem(
+            @PathVariable Long id,
             @Valid @RequestBody RecommendItemRequests recommendItemRequests
     ) {
-        recommendItemService.saveRecommendItem(recommendItemRequests);
+
+        recommendItemService.saveRecommendItem(id, recommendItemRequests);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping("/target-items/{id}/recommend-items")
+    public ResponseEntity<Void> updateRecommendItem(
+            @PathVariable Long id,
+            @Valid @RequestBody RecommendItemRequests recommendItemRequests
+    ) {
+        recommendItemService.updateRecommendItem(id, recommendItemRequests);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/target-items/{targetId}/recommend-items/{recommendId}")
     public ResponseEntity<Void> deleteRecommendItem(
             @PathVariable Long targetId,
             @PathVariable Long recommendId
     ) {
+
         recommendItemService.deleteRecommendItem(targetId, recommendId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -1,7 +1,7 @@
 package com.backendcodingtest.codingtest.recommenditem.service;
 
 import com.backendcodingtest.codingtest.common.util.StringEditor;
-import com.backendcodingtest.codingtest.item.dto.ItemDetail;
+import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
 import com.backendcodingtest.codingtest.item.model.Item;
 import com.backendcodingtest.codingtest.item.repository.ItemRepository;
 import com.backendcodingtest.codingtest.recommenditem.dto.RecommendItemRequest;
@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.NOT_FOUNT_ITEM;
-import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.NOT_FOUNT_RECOMMEND_ITEM;
+import static com.backendcodingtest.codingtest.common.exception.ExceptionMessage.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,11 +31,9 @@ public class RecommendItemService {
     private final RecommendItemSearchRepository recommendItemSearchRepository;
     private final ItemRepository itemRepository;
 
-    public RecommendItemResponses findRecommendItem(String id) {
+    public RecommendItemResponses findRecommendItems(String id) {
         List<Long> itemIdList = StringEditor.converterStringToStringList(id);
-
         // todo - db에 해당 item이 있는지 check 구현 -> 생각해보니 필요없을 듯
-
         List<Item> findTargetItemList = itemRepository.findAllById(itemIdList);
 
         List<RecommendItemResponse> recommendItemResponseList = createRecommendItemResponses(findTargetItemList);
@@ -44,10 +41,26 @@ public class RecommendItemService {
     }
 
 
-    @Transactional
-    public void saveRecommendItem(RecommendItemRequests recommendItemRequests) {
-        Item targetItem = itemRepository.findById(recommendItemRequests.getId()).orElseThrow(NOT_FOUNT_ITEM::getException);
 
+    @Transactional
+    public void saveRecommendItem(Long targetId, RecommendItemRequests recommendItemRequests) {
+
+        Item targetItem = itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
+        checkExistRecommendItem(targetId);
+
+        List<RecommendItemRequest> recommendItemRequestList = recommendItemRequests.getRecommendItemRequestList();
+        List<Long> recommendItemId = recommendItemRequestList.stream()
+                .map(RecommendItemRequest::getId)
+                .collect(Collectors.toList());
+        List<Item> resultItemList = itemRepository.findAllById(recommendItemId);
+
+        recommendItemCreateAndSave(targetItem, recommendItemRequestList, resultItemList);
+    }
+
+    @Transactional
+    public void updateRecommendItem(Long targetId, RecommendItemRequests recommendItemRequests) {
+
+        Item targetItem = itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
         List<RecommendItemRequest> recommendItemRequestList = recommendItemRequests.getRecommendItemRequestList();
         List<Long> recommendItemId = recommendItemRequestList.stream()
                 .map(recommendItemRequest -> recommendItemRequest.getId())
@@ -61,14 +74,10 @@ public class RecommendItemService {
 
     @Transactional
     public void deleteRecommendItem(Long targetId, Long recommendId) {
-        Item targetItem = itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
-        Item resultItem = itemRepository.findById(recommendId).orElseThrow(NOT_FOUNT_ITEM::getException);
+        itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
+        RecommendItem findRecommendItem = recommendItemRepository.findById(recommendId).orElseThrow(NOT_FOUNT_RECOMMEND_ITEM::getException);
 
-        RecommendItem recommendItem = recommendItemRepository
-                .findByTargetItemIdAndResultItemId(targetItem.getId(), resultItem.getId())
-                .orElseThrow(NOT_FOUNT_RECOMMEND_ITEM::getException);
-
-        recommendItemRepository.delete(recommendItem);
+        recommendItemRepository.delete(findRecommendItem);
     }
 
 
@@ -98,7 +107,7 @@ public class RecommendItemService {
         for (Item targetItem : findTargetItemList) {
             List<RecommendItem> recommendItemWithResult = recommendItemSearchRepository.findRecommendItemWithResult(targetItem.getId());
             List<ResultItemResponse> resultItemResponse = createResultItemResponse(recommendItemWithResult);
-            recommendItemResponseList.add(RecommendItemResponse.of(ItemDetail.of(targetItem), resultItemResponse));
+            recommendItemResponseList.add(RecommendItemResponse.of(ItemDetailResponse.of(targetItem), resultItemResponse));
         }
 
         return recommendItemResponseList;
@@ -116,6 +125,12 @@ public class RecommendItemService {
         }
 
         return resultItemResponse;
+    }
+
+    private void checkExistRecommendItem(Long targetId) {
+        if (recommendItemRepository.existsByTargetItemId(targetId)) {
+            throw DUPLICATE_ITEM_NAME.getException();
+        }
     }
 
 }

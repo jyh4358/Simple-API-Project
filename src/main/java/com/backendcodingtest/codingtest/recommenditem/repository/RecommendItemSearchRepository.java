@@ -1,8 +1,6 @@
 package com.backendcodingtest.codingtest.recommenditem.repository;
 
 import com.backendcodingtest.codingtest.recommenditem.model.RecommendItem;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,7 +17,7 @@ public class RecommendItemSearchRepository {
 
     public List<RecommendItem> findRecommendItemWithResult(Long targetItemId) {
         return queryFactory.selectFrom(recommendItem)
-                .leftJoin(recommendItem.resultItem, item)
+                .leftJoin(recommendItem.resultItem, item).fetchJoin()
                 .where(recommendItem.targetItem.id.eq(targetItemId))
                 .orderBy(recommendItem.score.desc())
                 .fetch();

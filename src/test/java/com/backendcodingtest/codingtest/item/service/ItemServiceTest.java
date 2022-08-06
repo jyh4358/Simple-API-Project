@@ -1,7 +1,7 @@
 package com.backendcodingtest.codingtest.item.service;
 
 import com.backendcodingtest.codingtest.common.basetest.ServiceBaseTest;
-import com.backendcodingtest.codingtest.common.exception.httpexception.DuplicateException;
+import com.backendcodingtest.codingtest.common.exception.httpexception.ExistException;
 import com.backendcodingtest.codingtest.common.exception.httpexception.NotFountException;
 import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
@@ -80,7 +80,7 @@ public class ItemServiceTest extends ServiceBaseTest {
         // when&then
         Assertions.assertThatThrownBy(() ->
                         itemService.saveItem(itemCreateAndUpdateRequest2))
-                .isInstanceOf(DuplicateException.class);
+                .isInstanceOf(ExistException.class);
 
     }
 
@@ -255,7 +255,7 @@ public class ItemServiceTest extends ServiceBaseTest {
         // when&then
         Assertions.assertThatThrownBy(() ->
                         itemService.updateItem(savedItem.getId(), itemCreateAndUpdateRequest))
-                .isInstanceOf(DuplicateException.class);
+                .isInstanceOf(ExistException.class);
 
     }
 

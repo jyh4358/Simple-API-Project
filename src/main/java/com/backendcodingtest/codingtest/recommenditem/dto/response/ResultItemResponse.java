@@ -18,6 +18,7 @@ public class ResultItemResponse {
     private String contentUrl;
     private int originalPrice;
     private int salePrice;
+    private Long recommendId;
     private int score;
     private int rank;
 
@@ -33,6 +34,7 @@ public class ResultItemResponse {
                 result.getContentUrl(),
                 result.getOriginalPrice(),
                 result.getSalePrice(),
+                recommendItem.getId(),
                 recommendItem.getScore(),
                 rank
         );
