@@ -1,20 +1,44 @@
 package com.backendcodingtest.codingtest.item.dto;
 
+import com.backendcodingtest.codingtest.item.model.Item;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class ItemDetailResponse {
-    private List<ItemDetail> itemDetailList = new ArrayList<>();
+    private Long id;
+    private String name;
+    private String imageUrl;
+    private String contentUrl;
+    private int originalPrice;
+    private int salePrice;
 
-    public static ItemDetailResponse of(List<ItemDetail> itemDetailList) {
-        return new ItemDetailResponse(itemDetailList);
+    public ItemDetailResponse(
+            Long id,
+            String name,
+            String imageUrl,
+            String contentUrl,
+            int originalPrice,
+            int salePrice
+    ) {
+        this.id = id;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.contentUrl = contentUrl;
+        this.originalPrice = originalPrice;
+        this.salePrice = salePrice;
+    }
+
+    public static ItemDetailResponse of(Item item) {
+        return new ItemDetailResponse(
+                item.getId(),
+                item.getName(),
+                item.getImageUrl(),
+                item.getContentUrl(),
+                item.getOriginalPrice(),
+                item.getSalePrice()
+        );
     }
 }

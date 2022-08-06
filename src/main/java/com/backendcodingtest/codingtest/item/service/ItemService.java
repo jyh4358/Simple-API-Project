@@ -2,8 +2,8 @@ package com.backendcodingtest.codingtest.item.service;
 
 import com.backendcodingtest.codingtest.common.util.StringEditor;
 import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
-import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
+import com.backendcodingtest.codingtest.item.dto.ItemDetailResponses;
 import com.backendcodingtest.codingtest.item.model.Item;
 import com.backendcodingtest.codingtest.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +23,10 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
 
-    public ItemDetailResponse findItem(String id) {
+    public ItemDetailResponse findItem(Long id) {
 
-        List<Long> ids = StringEditor.converterStringToStringList(id);
-        List<Item> findItemList = itemRepository.findAllById(ids);
-        return ItemDetailResponse.of(findItemList.stream().map(ItemDetail::of).collect(Collectors.toList()));
+        Item findItem = itemRepository.findById(id).orElseThrow(NOT_FOUNT_ITEM::getException);
+        return ItemDetailResponse.of(findItem);
     }
 
 

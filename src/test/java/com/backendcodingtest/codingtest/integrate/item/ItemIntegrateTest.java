@@ -1,9 +1,10 @@
 package com.backendcodingtest.codingtest.integrate.item;
 
-import com.backendcodingtest.codingtest.common.IntegrateBaseTest;
+import com.backendcodingtest.codingtest.common.basetest.IntegrateBaseTest;
 import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.model.Item;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -19,6 +20,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class ItemIntegrateTest extends IntegrateBaseTest {
 
+    @AfterEach
+    void tearDown() {
+        this.databaseCleaner.clean();
+    }
 
     @DisplayName("상품 등록 통합테스트")
     @Test

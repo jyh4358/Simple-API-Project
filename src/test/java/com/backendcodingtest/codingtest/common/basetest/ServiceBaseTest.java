@@ -1,5 +1,6 @@
-package com.backendcodingtest.codingtest.common;
+package com.backendcodingtest.codingtest.common.basetest;
 
+import com.backendcodingtest.codingtest.common.database.DatabaseCleaner;
 import com.backendcodingtest.codingtest.item.repository.ItemRepository;
 import com.backendcodingtest.codingtest.recommenditem.repository.RecommendItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,4 +17,6 @@ public class ServiceBaseTest {
     @Autowired
     protected RecommendItemRepository recommendItemRepository;
 
+    @Autowired
+    protected DatabaseCleaner databaseCleaner;
 }

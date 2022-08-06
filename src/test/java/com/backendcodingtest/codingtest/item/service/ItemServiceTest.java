@@ -1,14 +1,14 @@
 package com.backendcodingtest.codingtest.item.service;
 
+import com.backendcodingtest.codingtest.common.basetest.ServiceBaseTest;
 import com.backendcodingtest.codingtest.common.exception.httpexception.DuplicateException;
 import com.backendcodingtest.codingtest.common.exception.httpexception.NotFountException;
-import com.backendcodingtest.codingtest.common.ServiceBaseTest;
 import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
-import com.backendcodingtest.codingtest.item.dto.ItemDetail;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
 import com.backendcodingtest.codingtest.item.model.Item;
 import com.backendcodingtest.codingtest.recommenditem.dto.RecommendItemRequest;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,11 @@ public class ItemServiceTest extends ServiceBaseTest {
 
     @Autowired
     private ItemService itemService;
+
+    @AfterEach
+    void tearDown() {
+        this.databaseCleaner.clean();
+    }
 
     @DisplayName("상품을 등록한다.")
     @Test
@@ -94,71 +99,66 @@ public class ItemServiceTest extends ServiceBaseTest {
                 )
         );
 
-        String id = String.valueOf(savedItem.getId());
 
         // when
-        ItemDetailResponse itemDetailResponse = itemService.findItem(id);
+        ItemDetailResponse itemDetailResponse = itemService.findItem(savedItem.getId());
 
         // then
-        Assertions.assertThat(itemDetailResponse.getItemDetailList()).hasSize(1);
-
-        ItemDetail itemDetail = itemDetailResponse.getItemDetailList().get(0);
-        Assertions.assertThat(itemDetail.getId()).isEqualTo(savedItem.getId());
-        Assertions.assertThat(itemDetail.getName()).isEqualTo(savedItem.getName());
-        Assertions.assertThat(itemDetail.getImageUrl()).isEqualTo(savedItem.getImageUrl());
-        Assertions.assertThat(itemDetail.getContentUrl()).isEqualTo(savedItem.getContentUrl());
-        Assertions.assertThat(itemDetail.getOriginalPrice()).isEqualTo(savedItem.getOriginalPrice());
-        Assertions.assertThat(itemDetail.getSalePrice()).isEqualTo(savedItem.getSalePrice());
+        Assertions.assertThat(itemDetailResponse.getId()).isEqualTo(savedItem.getId());
+        Assertions.assertThat(itemDetailResponse.getName()).isEqualTo(savedItem.getName());
+        Assertions.assertThat(itemDetailResponse.getImageUrl()).isEqualTo(savedItem.getImageUrl());
+        Assertions.assertThat(itemDetailResponse.getContentUrl()).isEqualTo(savedItem.getContentUrl());
+        Assertions.assertThat(itemDetailResponse.getOriginalPrice()).isEqualTo(savedItem.getOriginalPrice());
+        Assertions.assertThat(itemDetailResponse.getSalePrice()).isEqualTo(savedItem.getSalePrice());
     }
 
-    @DisplayName("여러개의 상품을 조회한다.")
-    @Test
-    public void 상품_조회2() {
-
-        // given
-        Item savedItem1 = itemRepository.save(
-                new Item(
-                        "상품",
-                        "www.imageUrl.com",
-                        "www.contentUrl.com",
-                        10000,
-                        5000
-                )
-        );
-        Item savedItem2 = itemRepository.save(
-                new Item(
-                        "상품2",
-                        "www.imageUrl2.com",
-                        "www.contentUrl2.com",
-                        20000,
-                        10000
-                )
-        );
-
-        String id = savedItem1.getId() + "," + savedItem2.getId();
-
-        // when
-        ItemDetailResponse itemDetailResponse = itemService.findItem(id);
-
-        // then
-        Assertions.assertThat(itemDetailResponse.getItemDetailList()).hasSize(2);
-
-        ItemDetail itemDetail1 = itemDetailResponse.getItemDetailList().get(0);
-        Assertions.assertThat(itemDetail1.getId()).isEqualTo(savedItem1.getId());
-        Assertions.assertThat(itemDetail1.getName()).isEqualTo(savedItem1.getName());
-        Assertions.assertThat(itemDetail1.getImageUrl()).isEqualTo(savedItem1.getImageUrl());
-        Assertions.assertThat(itemDetail1.getContentUrl()).isEqualTo(savedItem1.getContentUrl());
-        Assertions.assertThat(itemDetail1.getOriginalPrice()).isEqualTo(savedItem1.getOriginalPrice());
-        Assertions.assertThat(itemDetail1.getSalePrice()).isEqualTo(savedItem1.getSalePrice());
-
-        ItemDetail itemDetail2 = itemDetailResponse.getItemDetailList().get(1);
-        Assertions.assertThat(itemDetail2.getId()).isEqualTo(savedItem2.getId());
-        Assertions.assertThat(itemDetail2.getName()).isEqualTo(savedItem2.getName());
-        Assertions.assertThat(itemDetail2.getImageUrl()).isEqualTo(savedItem2.getImageUrl());
-        Assertions.assertThat(itemDetail2.getContentUrl()).isEqualTo(savedItem2.getContentUrl());
-        Assertions.assertThat(itemDetail2.getOriginalPrice()).isEqualTo(savedItem2.getOriginalPrice());
-        Assertions.assertThat(itemDetail2.getSalePrice()).isEqualTo(savedItem2.getSalePrice());
-    }
+//    @DisplayName("여러개의 상품을 조회한다.")
+//    @Test
+//    public void 상품_조회2() {
+//
+//        // given
+//        Item savedItem1 = itemRepository.save(
+//                new Item(
+//                        "상품",
+//                        "www.imageUrl.com",
+//                        "www.contentUrl.com",
+//                        10000,
+//                        5000
+//                )
+//        );
+//        Item savedItem2 = itemRepository.save(
+//                new Item(
+//                        "상품2",
+//                        "www.imageUrl2.com",
+//                        "www.contentUrl2.com",
+//                        20000,
+//                        10000
+//                )
+//        );
+//
+//
+//        // when
+//        ItemDetailResponse item = itemService.findItem(savedItem2.getId());
+//
+//        // then
+//        Assertions.assertThat(itemDetailResponses.getItemDetailResponseList()).hasSize(2);
+//
+//        ItemDetailResponse itemDetailResponse1 = itemDetailResponses.getItemDetailResponseList().get(0);
+//        Assertions.assertThat(itemDetailResponse1.getId()).isEqualTo(savedItem1.getId());
+//        Assertions.assertThat(itemDetailResponse1.getName()).isEqualTo(savedItem1.getName());
+//        Assertions.assertThat(itemDetailResponse1.getImageUrl()).isEqualTo(savedItem1.getImageUrl());
+//        Assertions.assertThat(itemDetailResponse1.getContentUrl()).isEqualTo(savedItem1.getContentUrl());
+//        Assertions.assertThat(itemDetailResponse1.getOriginalPrice()).isEqualTo(savedItem1.getOriginalPrice());
+//        Assertions.assertThat(itemDetailResponse1.getSalePrice()).isEqualTo(savedItem1.getSalePrice());
+//
+//        ItemDetailResponse itemDetailResponse2 = itemDetailResponses.getItemDetailResponseList().get(1);
+//        Assertions.assertThat(itemDetailResponse2.getId()).isEqualTo(savedItem2.getId());
+//        Assertions.assertThat(itemDetailResponse2.getName()).isEqualTo(savedItem2.getName());
+//        Assertions.assertThat(itemDetailResponse2.getImageUrl()).isEqualTo(savedItem2.getImageUrl());
+//        Assertions.assertThat(itemDetailResponse2.getContentUrl()).isEqualTo(savedItem2.getContentUrl());
+//        Assertions.assertThat(itemDetailResponse2.getOriginalPrice()).isEqualTo(savedItem2.getOriginalPrice());
+//        Assertions.assertThat(itemDetailResponse2.getSalePrice()).isEqualTo(savedItem2.getSalePrice());
+//    }
 
     @DisplayName("상품을 수정한다.")
     @Test

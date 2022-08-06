@@ -2,6 +2,7 @@ package com.backendcodingtest.codingtest.item.controller;
 
 import com.backendcodingtest.codingtest.item.dto.ItemCreateAndUpdateRequest;
 import com.backendcodingtest.codingtest.item.dto.ItemDetailResponse;
+import com.backendcodingtest.codingtest.item.dto.ItemDetailResponses;
 import com.backendcodingtest.codingtest.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class ItemController {
 
     @GetMapping("/items/{id}")
     public ResponseEntity<ItemDetailResponse> findItem(
-            @PathVariable String id
+            @PathVariable Long id
     ) {
 
         ItemDetailResponse itemDetailResponse = itemService.findItem(id);
