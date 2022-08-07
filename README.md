@@ -70,31 +70,31 @@
 
 ### 고려 사항 && 참고 사항
 
-- private repository로 생성하였기 때문에 gitignore 처리를 하지 않았습니다.
+- private repository로 생성하였기 때문에 db 정보가 담긴 application-db.yml을 gitignore 처리를 하지 않았습니다.
 - 해당 연관 상품코드의 연관도 순위(rank)는 DB에 따로 저장할 필요성을 못느껴 DB에 저장하지 않고 서비스단에서 처리하였습니다.
 - csv 파일을 DB에 저장하는 로직을 구현하지 못했습니다. 때문에 AWS EC2에 배포하여 해당 데이터 값들을 넣어놨습니다.
   - 새로 저장하였기 때문에 csv에 저장된 기본키 값과는 다릅니다. 따라서 상품 전체 조회(GET: /items)하여 식별자를 확인한 이후에 API 요청을 해주시길 바랍니다.
   - 아래 링크에서 구현한 서비스를 이용하실 수 있습니다.
-  - [배포 링크](http://ec2-52-79-227-202.ap-northeast-2.compute.amazonaws.com:8080)
+  - [배포 링크](http://ec2-52-79-227-202.ap-northeast-2.compute.amazonaws.com:8080/docs/index.html)
 
 
 ### 빌드 방법
 
 - ./gradlew build
 - 생성된 jar 파일 실행
-  1. MySQL (ddl-auto: create)
+  1. MySQL (ddl-auto: create) 으로 실행
      - java -jar "-Dspring.profiles.active=local" .\build\libs\codingtest-0.0.1-SNAPSHOT.jar
      - DB 명: codingtest
      - url: jdbc:mysql://localhost:3306/codingtest
      - username: codingtest
      - password: codingtest
      
-  2. MySQL (ddl-auto: update)
+  2. MySQL (ddl-auto: update) 으로 실행
      - java -jar "-Dspring.profiles.active=dev" .\build\libs\codingtest-0.0.1-SNAPSHOT.jar
      - DB 명: codingtest
      - username: codingtest
      - password: codingtest
-  3. H2 (ddl-auto: create)
+  3. H2 (ddl-auto: create) 으로 실행
      - DB 명: test
      - jdbc-url: jdbc:h2:tcp://localhost/./test
      - username: sa
