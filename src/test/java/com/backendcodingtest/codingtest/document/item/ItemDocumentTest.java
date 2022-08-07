@@ -103,7 +103,7 @@ public class ItemDocumentTest extends DocumentBaseTest {
                 5000
         ));
         Item savedItem2 = itemRepository.save(new Item(
-                "양발",
+                "양발2",
                 "www.image-url.com",
                 "www.content-url.com",
                 10000,

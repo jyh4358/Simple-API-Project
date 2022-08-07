@@ -176,7 +176,7 @@ public class RecommendItemServiceTest extends ServiceBaseTest {
         );
         Item resultItem1 = itemRepository.save(
                 new Item(
-                        "상품",
+                        "상품2",
                         "www.imageUrl.com",
                         "www.contentUrl.com",
                         10000,
@@ -185,7 +185,7 @@ public class RecommendItemServiceTest extends ServiceBaseTest {
         );
         Item resultItem2 = itemRepository.save(
                 new Item(
-                        "상품2",
+                        "상품3",
                         "www.imageUrl2.com",
                         "www.contentUrl2.com",
                         20000,
