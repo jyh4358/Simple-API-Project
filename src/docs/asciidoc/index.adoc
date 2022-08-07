@@ -113,7 +113,7 @@ include::{snippets}/item-save/request-headers.adoc[]
 include::{snippets}/item-save/request-fields.adoc[]
 
 
-[[resources-item-save]]
+[[resources-item-modify]]
 == 상품 수정
 
 새로운 정보를 입력하여 상품 정보 수정을 진행한다.
@@ -180,7 +180,7 @@ include::{snippets}/recommendItem-modify/request-headers.adoc[]
 include::{snippets}/recommendItem-modify/request-fields.adoc[]
 
 
-[[resources-recommendItem-modify]]
+[[resources-recommendItem-delete]]
 == 추천 상품 삭제
 
 선택한 상품의 추천 상품들 중 1개의 추천 상품 식별자로 해당 추천 상품을 삭제한다.

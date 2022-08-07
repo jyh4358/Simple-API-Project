@@ -577,9 +577,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>GET /items/5 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /items/5 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Host: localhost:8080</pre>
+Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -591,7 +591,7 @@ Host: localhost:8080</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>HTTP/1.1 200 OK
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
 Content-Length: 167
 
@@ -602,7 +602,7 @@ Content-Length: 167
   "contentUrl" : "www.content-url.com",
   "originalPrice" : 10000,
   "salePrice" : 5000
-}</pre>
+}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -702,7 +702,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 403
+Content-Length: 404
 
 {
   "itemDetailResponseList" : [ {
@@ -714,7 +714,7 @@ Content-Length: 403
     "salePrice" : 5000
   }, {
     "id" : 3,
-    "name" : "양발",
+    "name" : "양발2",
     "imageUrl" : "www.image-url.com",
     "contentUrl" : "www.content-url.com",
     "originalPrice" : 10000,
@@ -1465,7 +1465,7 @@ Host: localhost:8080</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-07 02:59:42 +0900
+Last updated 2022-08-07 15:19:53 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
