@@ -48,28 +48,16 @@ public class RecommendItemService {
         Item targetItem = itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
         checkExistRecommendItem(targetId);
 
-        List<RecommendItemRequest> recommendItemRequestList = recommendItemRequests.getRecommendItemRequestList();
-        List<Long> recommendItemId = recommendItemRequestList.stream()
-                .map(RecommendItemRequest::getId)
-                .collect(Collectors.toList());
-        List<Item> resultItemList = itemRepository.findAllById(recommendItemId);
-
-        recommendItemCreateAndSave(targetItem, recommendItemRequestList, resultItemList);
+        recommendItemCreateAndSave(targetItem, recommendItemRequests);
     }
 
     @Transactional
     public void updateRecommendItem(Long targetId, RecommendItemRequests recommendItemRequests) {
 
         Item targetItem = itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
-        List<RecommendItemRequest> recommendItemRequestList = recommendItemRequests.getRecommendItemRequestList();
-        List<Long> recommendItemId = recommendItemRequestList.stream()
-                .map(recommendItemRequest -> recommendItemRequest.getId())
-                .collect(Collectors.toList());
-        List<Item> resultItemList = itemRepository.findAllById(recommendItemId);
-
         recommendItemRepository.deleteAllByTargetItemId(targetItem.getId());
 
-        recommendItemCreateAndSave(targetItem, recommendItemRequestList, resultItemList);
+        recommendItemCreateAndSave(targetItem, recommendItemRequests);
     }
 
     @Transactional
@@ -85,7 +73,15 @@ public class RecommendItemService {
     /*
         ========== 비즈니스 로직 ============
      */
-    private void recommendItemCreateAndSave(Item targetItem, List<RecommendItemRequest> recommendItemRequestList, List<Item> resultItemList) {
+    private void recommendItemCreateAndSave(Item targetItem, RecommendItemRequests recommendItemRequests) {
+
+        List<RecommendItemRequest> recommendItemRequestList = recommendItemRequests.getRecommendItemRequestList();
+        List<Long> recommendItemId = recommendItemRequestList.stream()
+                .map(recommendItemRequest -> recommendItemRequest.getId())
+                .collect(Collectors.toList());
+        List<Item> resultItemList = itemRepository.findAllById(recommendItemId);
+
+
         List<RecommendItem> recommendItemList = new ArrayList<>();
         for (Item resultItem : resultItemList) {
             for (RecommendItemRequest recommendItemRequest : recommendItemRequestList) {
@@ -129,7 +125,7 @@ public class RecommendItemService {
 
     private void checkExistRecommendItem(Long targetId) {
         if (recommendItemRepository.existsByTargetItemId(targetId)) {
-            throw DUPLICATE_ITEM_NAME.getException();
+            throw EXIST_RECOMMEND_ITEM.getException();
         }
     }
 

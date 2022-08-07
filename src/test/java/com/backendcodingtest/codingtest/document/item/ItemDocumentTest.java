@@ -95,14 +95,14 @@ public class ItemDocumentTest extends DocumentBaseTest {
     public void 상품_전체_조회_문서화() throws Exception {
 
         // given
-        Item savedItem1 = itemRepository.save(new Item(
+        itemRepository.save(new Item(
                 "양발",
                 "www.image-url.com",
                 "www.content-url.com",
                 10000,
                 5000
         ));
-        Item savedItem2 = itemRepository.save(new Item(
+        itemRepository.save(new Item(
                 "양발2",
                 "www.image-url.com",
                 "www.content-url.com",

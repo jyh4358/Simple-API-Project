@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -188,7 +187,5 @@ public class ItemIntegrateTest extends IntegrateBaseTest {
         // then
         List<Item> findItems = itemRepository.findAll();
         Assertions.assertThat(findItems).hasSize(0);
-
-
     }
 }

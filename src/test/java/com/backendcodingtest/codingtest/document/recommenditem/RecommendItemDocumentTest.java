@@ -113,11 +113,11 @@ public class RecommendItemDocumentTest extends DocumentBaseTest {
                 5000
         ));
 
-        RecommendItem savedRecommendItem1 = recommendItemRepository.save(
-                new com.backendcodingtest.codingtest.recommenditem.model.RecommendItem(savedTargetItem, savedResultItem1, 20)
+        recommendItemRepository.save(
+                new RecommendItem(savedTargetItem, savedResultItem1, 20)
         );
-        RecommendItem savedRecommendItem2 = recommendItemRepository.save(
-                new com.backendcodingtest.codingtest.recommenditem.model.RecommendItem(savedTargetItem, savedResultItem2, 19)
+        recommendItemRepository.save(
+                new RecommendItem(savedTargetItem, savedResultItem2, 19)
         );
 
         // when&&then

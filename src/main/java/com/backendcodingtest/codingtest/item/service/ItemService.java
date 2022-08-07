@@ -29,6 +29,7 @@ public class ItemService {
         return ItemDetailResponse.of(findItem);
     }
 
+
     public ItemDetailResponses findAllItem() {
 
         List<Item> findAllItem = itemRepository.findAll();
@@ -46,33 +47,6 @@ public class ItemService {
         itemRepository.save(
                 itemCreateAndUpdateRequest.toEntity()
         );
-//        todo - 추천 아이템들이 레포에 있는지 확인하는 checker 구현
-//        List<Long> recommendItemIdList = itemCreateAndUpdateRequest.getRecommendItemRequestList().stream()
-//                .map(RecommendItemRequest::getId)
-//                .collect(Collectors.toList());
-//        if (!itemRepository.findAllById(recommendItemIdList).stream()
-//                .map(Item::getId)
-//                .anyMatch(itemId -> recommendItemIdList.contains(itemId))) {
-//
-//        }
-//        itemRepository.findAllById(recommendItemIdList).containsAll(recommendItemIdList);
-//        List<Long> recommendItemIdList = itemCreateAndUpdateRequest.getRecommendItemRequestList().stream()
-//                .map(RecommendItemRequest::getId)
-//                .collect(Collectors.toList());
-//        List<Item> findRecommendItemList = itemRepository.findAllById(recommendItemIdList);
-//
-//        for (RecommendItemRequest recommendItemRequest : itemCreateAndUpdateRequest.getRecommendItemRequestList()) {
-//            for (Item findRecommendItem : findRecommendItemList) {
-//                if (recommendItemRequest.getId() == findRecommendItem.getId()) {
-//                    recommendItemRepository.save(RecommendItem.creatRecommendItem(
-//                                    savedItem,
-//                                    findRecommendItem,
-//                                    recommendItemRequest.getScore()
-//                            ));
-//                }
-//            }
-//        }
-
     }
 
     @Transactional

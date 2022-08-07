@@ -117,7 +117,7 @@ public class RecommendItemIntegrateTest extends IntegrateBaseTest {
                 new RecommendItem(savedTargetItem, savedResultItem2, 19)
         );
 
-        // when
+        // when&&then
         mockMvc.perform(get("/target-items/recommend-items?id=" + savedTargetItem.getId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -148,16 +148,6 @@ public class RecommendItemIntegrateTest extends IntegrateBaseTest {
                 .andExpect(jsonPath("recommendItemResponseList.[0].results.[1].score").value(savedRecommendItem2.getScore()))
                 .andExpect(jsonPath("recommendItemResponseList.[0].results.[1].rank").value(2))
                 .andDo(print());
-
-        // then
-        List<RecommendItem> findRecommendItem = recommendItemRepository.findAll();
-        Assertions.assertThat(findRecommendItem).hasSize(2);
-
-        List<Long> findResultItemId = findRecommendItem.stream()
-                .map(RecommendItem::getResultItem)
-                .map(Item::getId)
-                .collect(Collectors.toList());
-        Assertions.assertThat(findResultItemId).containsOnly(savedResultItem1.getId(), savedResultItem2.getId());
     }
 
     @DisplayName("추천 상품 수정 통합테스트")
