@@ -46,15 +46,22 @@ public class RecommendItemService {
     public void saveRecommendItem(Long targetId, RecommendItemRequests recommendItemRequests) {
 
         Item targetItem = itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
-        checkExistRecommendItem(targetId);
+        checkExistRecommendItem(targetItem.getId());
+        checkBadRequestRecommendItem(targetItem.getId(), recommendItemRequests);
+        checkDuplicateItem(recommendItemRequests);
 
         recommendItemCreateAndSave(targetItem, recommendItemRequests);
     }
+
+
+
 
     @Transactional
     public void updateRecommendItem(Long targetId, RecommendItemRequests recommendItemRequests) {
 
         Item targetItem = itemRepository.findById(targetId).orElseThrow(NOT_FOUNT_ITEM::getException);
+        checkBadRequestRecommendItem(targetItem.getId(), recommendItemRequests);
+
         recommendItemRepository.deleteAllByTargetItemId(targetItem.getId());
 
         recommendItemCreateAndSave(targetItem, recommendItemRequests);
@@ -126,6 +133,23 @@ public class RecommendItemService {
     private void checkExistRecommendItem(Long targetId) {
         if (recommendItemRepository.existsByTargetItemId(targetId)) {
             throw EXIST_RECOMMEND_ITEM.getException();
+        }
+    }
+
+    private void checkBadRequestRecommendItem(Long id, RecommendItemRequests recommendItemRequests) {
+        if (recommendItemRequests.getRecommendItemRequestList().stream()
+                .map(RecommendItemRequest::getId)
+                .anyMatch(recommendItemId -> recommendItemId == id)) {
+            throw BAD_REQUEST_RECOMMEND_ITEM.getException();
+        }
+    }
+
+    private void checkDuplicateItem(RecommendItemRequests recommendItemRequests) {
+        List<Long> recommendItemIdList = recommendItemRequests.getRecommendItemRequestList().stream()
+                .map(RecommendItemRequest::getId)
+                .collect(Collectors.toList());
+        if (recommendItemIdList.size() != recommendItemIdList.stream().distinct().count()) {
+            throw BAD_REQUEST_DUPLICATE_RECOMMEND_ITEM.getException();
         }
     }
 

@@ -1,6 +1,7 @@
 package com.backendcodingtest.codingtest.common.exception.exceptionadvice;
 
 import com.backendcodingtest.codingtest.common.exception.ErrorResponse;
+import com.backendcodingtest.codingtest.common.exception.httpexception.BadRequestException;
 import com.backendcodingtest.codingtest.common.exception.httpexception.ExistException;
 import com.backendcodingtest.codingtest.common.exception.httpexception.NotFountException;
 import lombok.extern.slf4j.Slf4j;
@@ -51,4 +52,10 @@ public class ExceptionAdviceController {
         return ErrorResponse.error(e.getCode(), e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BadRequestException.class)
+    public ErrorResponse handleBadRequestException(BadRequestException e) {
+        log.error(e.getClass() + ": " + e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
+        return ErrorResponse.error(e.getCode(), e.getMessage());
+    }
 }
