@@ -27,7 +27,7 @@
 
 현재 해당 과제를 EC2에 배포해놨습니다. 아래 링크에서 REST Docs를 확인하거나 로컬에서 jar 파일 실행하여 확인하실 수 있습니다.
 
-[배포 REST Docs 링크](http://ec2-52-79-227-202.ap-northeast-2.compute.amazonaws.com:8080/docs/index.html)
+[배포 REST Docs 링크](http://ec2-13-209-19-34.ap-northeast-2.compute.amazonaws.com:8080/docs/index.html)
 
 [로컬 REST Docs 링크](http://localhost:8080/docs/index.html)
 
@@ -75,7 +75,7 @@
 - csv 파일을 DB에 저장하는 로직을 구현하지 못했습니다. 때문에 AWS EC2에 배포하여 해당 데이터 값들을 넣어놨습니다.
   - 새로 저장하였기 때문에 csv에 저장된 기본키 값과는 다릅니다. 따라서 상품 전체 조회(GET: /items)하여 식별자를 확인한 이후에 API 요청을 해주시길 바랍니다.
   - 아래 링크에서 구현한 서비스를 이용하실 수 있습니다.
-  - [배포 링크](http://ec2-52-79-227-202.ap-northeast-2.compute.amazonaws.com:8080/docs/index.html)
+  - [배포 링크](http://ec2-13-209-19-34.ap-northeast-2.compute.amazonaws.com:8080/docs/index.html)
 
 
 ### 빌드 방법
