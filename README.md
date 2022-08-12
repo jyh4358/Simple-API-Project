@@ -25,11 +25,8 @@
 
 ### REST Docs
 
-아래 링크에서 REST Docs를 확인하거나 로컬에서 jar 파일 실행하여 확인하실 수 있습니다.
+로컬에서 jar 파일 실행하여 REST Docs를 확인하실 수 있습니다.
 
-[배포 REST Docs 링크](http://ec2-13-209-19-34.ap-northeast-2.compute.amazonaws.com:8082/docs/index.html)
-
-[로컬 REST Docs 링크](http://localhost:8080/docs/index.html)
 
 ![image](https://file-upload-store-jdd.s3.ap-northeast-2.amazonaws.com/%EB%A0%88%EC%8A%A4%ED%8A%B8%EB%8B%A5%EC%8A%A4.JPG)
 
