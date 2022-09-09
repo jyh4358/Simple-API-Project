@@ -1,4 +1,4 @@
-## Eigene Korea - Backend Software Engineer Coding Test
+## Simple-API-Project
 
 <br/>
 <br/>
